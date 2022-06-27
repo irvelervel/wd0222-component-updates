@@ -1,7 +1,7 @@
 // ...this component is definitely going to perform a network call on the mounting phase...
 
 import { Component } from 'react'
-import { Card } from 'react-bootstrap'
+import { Card, Spinner } from 'react-bootstrap'
 
 // ORDER OF CALLING
 // 1) render()
@@ -30,7 +30,7 @@ class MovieDetails extends Component {
   // we should find a way to re-trigger the fetchMovieDetails() function
   // whenever the movieTitle prop changes value!
 
-  componentDidUpdate = () => {
+  componentDidUpdate = (prevProps, prevState) => {
     // componentDidUpdate will trigger automatically whenever the state changes
     // or the props change!
     console.log('COMPONENT JUST UPDATED')
@@ -41,6 +41,12 @@ class MovieDetails extends Component {
     // once again.
     // the solution? we should find a way to call fetchMovieDetails() from componentDidMount
     // not when the STATE changes, ma when a particular props does change: this.props.movieTitle
+
+    if (prevProps.movieTitle !== this.props.movieTitle) {
+      this.fetchMovieDetails() // <-- invoked just when this.props.movieTitle changes
+      // this if statement makes sure we invoke the fetchMovieDetails()
+      // just when the movie title from the dropdown changes!
+    }
   }
 
   fetchMovieDetails = async () => {
@@ -81,7 +87,7 @@ class MovieDetails extends Component {
             </Card.Body>
           </Card>
         ) : (
-          <div>LOADING...</div>
+          <Spinner variant="warning" animation="border" />
           //   this loading div is the whole rendered content initially!
         )}
       </>

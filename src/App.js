@@ -1,12 +1,21 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container, Row, Col, Form } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { Component } from 'react'
 import MovieDetails from './components/MovieDetails'
+import MovieDropdown from './components/MovieDropdown'
 
 class App extends Component {
   state = {
     movieTitle: 'Batman Begins',
+  }
+
+  handleMovieTitle = (newMovie) => {
+    // I need to write this function here, because I need to invoke setState
+    // in the component I want to change the state of!
+    this.setState({
+      movieTitle: newMovie,
+    })
   }
 
   render() {
@@ -15,22 +24,10 @@ class App extends Component {
         <Container>
           <Row className="justify-content-center mt-3 mb-2">
             <Col md={6}>
-              <h3>Choose your superhero!</h3>
-              <Form.Group>
-                <Form.Control
-                  as="select"
-                  value={this.state.movieTitle}
-                  onChange={(e) =>
-                    this.setState({ movieTitle: e.target.value })
-                  }
-                >
-                  <option>Batman Begins</option>
-                  <option>Man of Steel</option>
-                  <option>The Joker</option>
-                  <option>The Flash</option>
-                  <option>Wonder Woman</option>
-                </Form.Control>
-              </Form.Group>
+              <MovieDropdown
+                movieTitle={this.state.movieTitle} // READ MODE
+                handleMovieTitle={this.handleMovieTitle} // "WRITE" MODE
+              />
             </Col>
           </Row>
           <Row className="justify-content-center mt-3 mb-2">
